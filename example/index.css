@@ -1,0 +1,14 @@
+body {
+	font-family: monospace;
+}
+
+.wrapper {
+	width: 100%;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+#total-wrapper {
+	position: relative;
+	height: 100px;
+}

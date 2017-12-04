@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+
+		<link rel="stylesheet" href="example/index.css">
+	</head>
+	<body>
+		<div class="wrapper">
+			<div id="total-wrapper"></div>
+		</div>
+
+		<script src="../Delog.js"></script>
+		<script>
+			var elem = document.getElementById('total-wrapper');
+			var log = new Delog('example/data.json', function() {
+				log.total(elem, {color: '#000', empties: true});
+			});
+		</script>
+	</body>
+</html>
