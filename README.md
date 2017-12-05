@@ -14,6 +14,9 @@ var log = new Delog('example/data.json', function() {
 ```
 
 ## API
-Currently only the ```total``` method is available.
 #### ```log.total(element, properties);```
-```properties``` is a JSON, with ```color``` and ```empties``` fields. The ```color``` is the color of the bars, if ```empties``` is true empty days are marked with a line.
+Draws a one color chart of your total hours/day.
+```properties``` is a JSON, with ```color``` and ```empties``` fields. The ```color``` is the hex code of the colors of the bars. If ```empties``` is true empty days are marked with a line.
+#### ```log.overview(element, properties);```
+Draws a colorful chart of your total hours/day. The colors are the same as in Log or ```color``` if not set.
+```properties``` is a JSON, with ```color``` and ```empties``` fields. The ```color``` is the default color for the sectors without set colors. If ```empties``` is true empty days are marked with a line.
