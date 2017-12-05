@@ -14,7 +14,7 @@ function Delog(file, cb) {
 		}
 	}
 
-	this.total = function(el, prop) {
+	this._overview = function(el, prop, colored) {
 		var date = new Date(); // the starting date
 		date.setDate(date.getDate() - 60)
 		date.setHours(0,0,0,0);
@@ -49,7 +49,8 @@ function Delog(file, cb) {
 				entry_el.style.width = "100%";
 				entry_el.style.height = height + '%';
 				entry_el.style.bottom = yp + '%';
-				entry_el.style.background = prop.color;
+				if (colored) entry_el.style.background = t.json.palette[entry.c] ? t.json.palette[entry.c] : prop.color;
+				else entry_el.style.background = prop.color;
 				entry_el.style.position = "absolute";
 
 				column.appendChild(entry_el);
@@ -59,6 +60,14 @@ function Delog(file, cb) {
 
 			el.appendChild(column);
 		}
+	}
+
+	this.overview = function(el, prop) {
+		t._overview(el, prop, true);
+	}
+
+	this.total = function(el, prop) {
+		t._overview(el, prop, false);
 	}
 
 	function after(log, date) {

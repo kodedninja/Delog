@@ -4,18 +4,23 @@
 		<meta charset="utf-8">
 		<title></title>
 
-		<link rel="stylesheet" href="example/index.css">
+		<link rel="stylesheet" href="/example/index.css">
 	</head>
 	<body>
 		<div class="wrapper">
+			<h3>Total:</h3>
 			<div id="total-wrapper"></div>
+			<h3>Overview:</h3>
+			<div id="overview-wrapper"></div>
 		</div>
 
 		<script src="../Delog.js"></script>
 		<script>
 			var elem = document.getElementById('total-wrapper');
-			var log = new Delog('example/data.json', function() {
+			var overview_el = document.getElementById('overview-wrapper');
+			var log = new Delog('/example/data.json', function() {
 				log.total(elem, {color: '#000', empties: true});
+				log.overview(overview_el, {color: '#000', empties: true});
 			});
 		</script>
 	</body>

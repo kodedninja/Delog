@@ -12,3 +12,8 @@ body {
 	position: relative;
 	height: 100px;
 }
+
+#overview-wrapper {
+	position: relative;
+	height: 200px;
+}
