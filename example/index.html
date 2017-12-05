@@ -12,15 +12,19 @@
 			<div id="total-wrapper"></div>
 			<h3>Overview:</h3>
 			<div id="overview-wrapper"></div>
+			<h3>Sectors:</h3>
+			<div id="sectors-wrapper"></div>
 		</div>
 
 		<script src="../Delog.js"></script>
 		<script>
 			var elem = document.getElementById('total-wrapper');
 			var overview_el = document.getElementById('overview-wrapper');
+			var sectors_el = document.getElementById('sectors-wrapper');
 			var log = new Delog('/example/data.json', function() {
 				log.total(elem, {color: '#000', empties: true});
 				log.overview(overview_el, {color: '#000', empties: true});
+				log.sectors(sectors_el, {fontSize: '15px'});
 			});
 		</script>
 	</body>

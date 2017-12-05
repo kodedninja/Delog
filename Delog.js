@@ -70,6 +70,30 @@ function Delog(file, cb) {
 		t._overview(el, prop, false);
 	}
 
+	this.sectors = function(el, prop) {
+		for (var sect in t.json.palette) {
+			var color = t.json.palette[sect];
+
+			var sector_el = document.createElement('div');
+			sector_el.classList = 'sector';
+			sector_el.style.marginTop = '5px';
+			sector_el.style.display = 'inline-block';
+			var sector_name = document.createElement('span');
+			sector_name.innerHTML = sect;
+			sector_name.style.fontSize = prop.fontSize;
+			var color_el = document.createElement('div');
+			color_el.style.width = prop.fontSize;
+			color_el.style.height = prop.fontSize;
+			color_el.style.display = 'inline-block';
+			color_el.style.background = color;
+			color_el.style.margin = '0 15px';
+
+			sector_el.appendChild(color_el);
+			sector_el.appendChild(sector_name);
+			el.appendChild(sector_el);
+		}
+	}
+
 	function after(log, date) {
 		var res = {};
 
