@@ -16,13 +16,17 @@ var log = new Delog('example/data.json', function() {
 ## API
 #### ```log.total(element, properties);```
 Draws a one color chart of your total hours/day.
-```properties``` is a JSON, with ```color``` and ```empties``` fields. The ```color``` is the hex code of the colors of the bars. If ```empties``` is true empty days are marked with a line.
+The ```properties``` JSON has two fields:<br>
+```color```:  the hex code of the colors of the bars<br>
+```empties```: if true empty days are marked with a line
 
 #### ```log.overview(element, properties);```
 Draws a colorful chart of your total hours/day. The colors are the same as in Log or ```properties.color``` if not set.
-```properties``` is a JSON, with ```color``` and ```empties``` fields. The ```color``` is the default color for the sectors without set colors. If ```empties``` is true empty days are marked with a line.
+The ```properties``` JSON has two fields:<br>
+```color```:  the default color for the sectors without a set color<br>
+```empties```: if true empty days are marked with a line
 
 #### ```log.sectors(element, properties);```
-Prints the palette of sectors. The ```properties``` field has only two fields:<br>
-```fontSize```: the size font and of the square (which shows the color)<br>
-```block```: if true the sectors will be printed under each other, otherwise in a line.
+Prints the palette of sectors. The ```properties``` JSON has only two fields:<br>
+```fontSize```: the size of the font and of the square (which shows the color)<br>
+```block```: if true the sectors will be printed under each other, otherwise in a line
