@@ -80,11 +80,11 @@ function Delog(file, cb) {
 			sector_el.style.display = 'inline-block';
 			var sector_name = document.createElement('span');
 			sector_name.innerHTML = sect;
-			sector_name.style.fontSize = prop.fontSize;
+			sector_name.style.fontSize = prop.fontSize ? prop.fontSize : '14px';
 			var color_el = document.createElement('div');
-			color_el.style.width = prop.fontSize;
-			color_el.style.height = prop.fontSize;
-			color_el.style.display = 'inline-block';
+			color_el.style.width = prop.fontSize ? prop.fontSize : '14px';
+			color_el.style.height = prop.fontSize ? prop.fontSize : '14px';
+			color_el.style.display = prop.block ? 'block' : 'inline-block';
 			color_el.style.background = color;
 			color_el.style.margin = '0 15px';
 
