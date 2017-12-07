@@ -74,7 +74,7 @@ function Delog(file, cb) {
 
 			sector_el.innerHTML = '<h3>' + key + '</h3>' +
 								  res[key].toFixed(2) + 'h<br>' +
-								  entries[key] + ' logs<br>' +
+								  entries[key] + (entries[key] > 1 ? ' logs<br>' : ' log<br>') +
 								  (res[key]*100/total).toFixed(2) + '%';
 			el.appendChild(sector_el)
 		}
