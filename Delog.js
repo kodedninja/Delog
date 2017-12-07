@@ -62,6 +62,23 @@ function Delog(file, cb) {
 		}
 	}
 
+	this._percents = function(el, unordered, entries) {
+		var res = order(unordered);
+
+		for (var key in res) {
+			var sector_el = document.createElement('div');
+			sector_el.classList = 'sector';
+			sector_el.style.width = '25%';
+			sector_el.style.display = 'inline-block';
+			sector_el.style.margin = '15px 0';
+
+			sector_el.innerHTML = '<h3>' + key + '</h3>' +
+								  res[key].toFixed(2) + 'h<br>' +
+								  entries[key] + ' logs';
+			el.appendChild(sector_el)
+		}
+	}
+
 	this.overview = function(el, prop) {
 		t._overview(el, prop, true);
 	}
@@ -70,7 +87,7 @@ function Delog(file, cb) {
 		t._overview(el, prop, false);
 	}
 
-	this.sectors = function(el, prop) {
+	this.sector_colors = function(el, prop) {
 		for (var sect in t.json.palette) {
 			var color = t.json.palette[sect];
 
@@ -94,7 +111,7 @@ function Delog(file, cb) {
 		}
 	}
 
-	this.sectors_percent = function(el, prop) {
+	this.sectors= function(el, prop) {
 		var unordered = {}, entries = {};
 		for (var i = 0; i < t.json.log.length; i++) {
 			var entry = t.json.log[i];
@@ -104,20 +121,20 @@ function Delog(file, cb) {
 			unordered[entry.c] += parseFloat(duration(parse(entry.s), parse(entry.e)));
 		}
 
-		var res = order(unordered);
+		t._percents(el, unordered, entries);
+	}
 
-		for (var key in res) {
-			var sector_el = document.createElement('div');
-			sector_el.classList = 'sector';
-			sector_el.style.width = '25%';
-			sector_el.style.display = 'inline-block';
-			sector_el.style.margin = '15px 0';
-
-			sector_el.innerHTML = '<h3>' + key + '</h3>' +
-								  res[key].toFixed(2) + 'h<br>' +
-								  entries[key] + ' logs';
-			el.appendChild(sector_el)
+	this.projects = function(el, prop) {
+		var unordered = {}, entries = {};
+		for (var i = 0; i < t.json.log.length; i++) {
+			var entry = t.json.log[i];
+			if (!unordered[entry.t]) unordered[entry.t] = 0;
+			if (!entries[entry.t]) entries[entry.t] = 0;
+			entries[entry.t]++;
+			unordered[entry.t] += parseFloat(duration(parse(entry.s), parse(entry.e)));
 		}
+
+		t._percents(el, unordered, entries);
 	}
 
 	this.latest = function(el, x, separator) {
