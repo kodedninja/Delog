@@ -62,7 +62,7 @@ function Delog(file, cb) {
 		}
 	}
 
-	this._percents = function(el, unordered, entries) {
+	this._percents = function(el, unordered, entries, total) {
 		var res = order(unordered);
 
 		for (var key in res) {
@@ -74,7 +74,8 @@ function Delog(file, cb) {
 
 			sector_el.innerHTML = '<h3>' + key + '</h3>' +
 								  res[key].toFixed(2) + 'h<br>' +
-								  entries[key] + ' logs';
+								  entries[key] + ' logs<br>' +
+								  (res[key]*100/total).toFixed(2) + '%';
 			el.appendChild(sector_el)
 		}
 	}
@@ -111,30 +112,34 @@ function Delog(file, cb) {
 		}
 	}
 
-	this.sectors= function(el, prop) {
-		var unordered = {}, entries = {};
+	this.sectors= function(el) {
+		var unordered = {}, entries = {}, total = 0;
 		for (var i = 0; i < t.json.log.length; i++) {
 			var entry = t.json.log[i];
 			if (!unordered[entry.c]) unordered[entry.c] = 0;
 			if (!entries[entry.c]) entries[entry.c] = 0;
 			entries[entry.c]++;
-			unordered[entry.c] += parseFloat(duration(parse(entry.s), parse(entry.e)));
+			var d = parseFloat(duration(parse(entry.s), parse(entry.e)));
+			if (d) total += d;
+			unordered[entry.c] += d;
 		}
 
-		t._percents(el, unordered, entries);
+		t._percents(el, unordered, entries, total);
 	}
 
-	this.projects = function(el, prop) {
-		var unordered = {}, entries = {};
+	this.projects = function(el) {
+		var unordered = {}, entries = {}, total = 0;
 		for (var i = 0; i < t.json.log.length; i++) {
 			var entry = t.json.log[i];
 			if (!unordered[entry.t]) unordered[entry.t] = 0;
 			if (!entries[entry.t]) entries[entry.t] = 0;
 			entries[entry.t]++;
-			unordered[entry.t] += parseFloat(duration(parse(entry.s), parse(entry.e)));
+			var d = parseFloat(duration(parse(entry.s), parse(entry.e)))
+			if (d) total += d;
+			unordered[entry.t] += d;
 		}
 
-		t._percents(el, unordered, entries);
+		t._percents(el, unordered, entries, total);
 	}
 
 	this.latest = function(el, x, separator) {

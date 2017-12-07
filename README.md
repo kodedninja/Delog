@@ -29,10 +29,16 @@ The ```properties``` JSON has two fields:<br>
 ```color```:  the default color for the sectors without a set color<br>
 ```empties```: if true empty days are marked with a line
 
-#### ```log.sectors(element, properties);```
-Prints the palette of sectors. The ```properties``` JSON has only two fields:<br>
-```fontSize```: the size of the font and of the square (which shows the color)<br>
-```block```: if true the sectors will be printed under each other, otherwise in a line
+#### ```log.sectors(element);```
+Prints every sector with total hours, total logs and focus percentage.
+
+#### ```log.projects(element);```
+Prints every project with total hours, total logs and focus percentage.
 
 #### ```log.latest(element, x, separator);```
 Prints the ```x``` latest entries. The separator is a string which separates the different properties of the entry. The default separator is ``` - ```.
+
+#### ```log.sector_colors(element, properties);```
+Prints the palette of sectors. The ```properties``` JSON has only two fields:<br>
+```fontSize```: the size of the font and of the square (which shows the color)<br>
+```block```: if true the sectors will be printed under each other, otherwise in a line
