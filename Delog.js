@@ -94,6 +94,32 @@ function Delog(file, cb) {
 		}
 	}
 
+	this.sectors_percent = function(el, prop) {
+		var unordered = {}, entries = {};
+		for (var i = 0; i < t.json.log.length; i++) {
+			var entry = t.json.log[i];
+			if (!unordered[entry.c]) unordered[entry.c] = 0;
+			if (!entries[entry.c]) entries[entry.c] = 0;
+			entries[entry.c]++;
+			unordered[entry.c] += parseFloat(duration(parse(entry.s), parse(entry.e)));
+		}
+
+		var res = order(unordered);
+
+		for (var key in res) {
+			var sector_el = document.createElement('div');
+			sector_el.classList = 'sector';
+			sector_el.style.width = '25%';
+			sector_el.style.display = 'inline-block';
+			sector_el.style.margin = '15px 0';
+
+			sector_el.innerHTML = '<h3>' + key + '</h3>' +
+								  res[key].toFixed(2) + 'h<br>' +
+								  entries[key] + ' logs';
+			el.appendChild(sector_el)
+		}
+	}
+
 	this.latest = function(el, x, separator) {
 		separator = separator || ' - ';
 
@@ -151,6 +177,28 @@ function Delog(file, cb) {
 				if (res[day.getTime().toString()]) res[day.getTime().toString()].push(log[i]);
 			}
 		}
+		return res;
+	}
+
+	function order(json) {
+		var res = {}, a = [];
+
+		for (var key in json) {
+			a.push(json[key]);
+		}
+
+		a = a.sort(function(a, b) {
+			return b - a;
+		});
+
+		function getKeyByValue(object, value) {
+  			return Object.keys(object).find(key => object[key] === value);
+		}
+
+		for (var i = 0; i < a.length; i++) {
+			res[getKeyByValue(json, a[i])] = a[i];
+		}
+
 		return res;
 	}
 
