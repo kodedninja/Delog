@@ -3,13 +3,16 @@ A web visualiser for [Log](https://joshavanier.itch.io/log).
 
 ## Usage
 - Download ```Delog.js``` and include it to your page.
-- Make a ```div```. (It must be ```position: relative``` and have a defined ```height```!)
+- Make a ```div```. (It must be ```position: relative``` and have a defined ```height``` for charts!)
 - Export your logs from Log
 - Use it like this:
 ```javascript
 var elem = document.getElementById('total-wrapper');
+var latest = document.getElementById('latest-wrapper');
 var log = new Delog('example/data.json', function() {
   log.total(elem, {color: '#000', empties: true});
+  log.latest(elem, 5, ' ~ ');
+  // other functions
 });
 ```
 
@@ -30,3 +33,6 @@ The ```properties``` JSON has two fields:<br>
 Prints the palette of sectors. The ```properties``` JSON has only two fields:<br>
 ```fontSize```: the size of the font and of the square (which shows the color)<br>
 ```block```: if true the sectors will be printed under each other, otherwise in a line
+
+#### ```log.latest(element, x, separator);```
+Prints the ```x``` latest entries. The separator is a string which separates the different properties of the entry. The default separator is ``` - ```.
