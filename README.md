@@ -35,6 +35,9 @@ Prints every sector with total hours, total logs and focus percentage.
 #### ```log.projects(element);```
 Prints every project with total hours, total logs and focus percentage.
 
+#### ```log.days(element);```
+Prints how many days have passed since the first log.
+
 #### ```log.latest(element, x, separator);```
 Prints the ```x``` latest entries. The separator is a string which separates the different properties of the entry. The default separator is ``` - ```.
 

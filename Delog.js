@@ -88,6 +88,25 @@ function Delog(file, cb) {
 		t._overview(el, prop, false);
 	}
 
+	this.days = function(el) {
+		var date = new Date('2010-01-01'); // the starting date
+		date.setHours(0,0,0,0);
+
+		var b = after(t.json.log, date), r = 0;
+		var days = Object.keys(b).length;
+		var res = 0;
+		for (var i in b) {
+
+			if (b[i].length > 0) {
+				res = days - r;
+				break;
+			}
+			r++;
+		}
+
+		el.innerHTML = res + (res > 1 ? ' days' : ' day');
+	}
+
 	this.sector_colors = function(el, prop) {
 		for (var sect in t.json.palette) {
 			var color = t.json.palette[sect];
@@ -199,6 +218,23 @@ function Delog(file, cb) {
 				if (res[day.getTime().toString()]) res[day.getTime().toString()].push(log[i]);
 			}
 		}
+		return res;
+	}
+
+	function after_filter(log, date) {
+		var b = after(log, date), r = 0;
+		var days = Object.keys(b).length;
+		var res = 0;
+		for (var i in b) {
+
+			if (b[i].length > 0) {
+				console.log(b[i])
+				res = days - r;
+				break;
+			}
+			r++;
+		}
+
 		return res;
 	}
 
