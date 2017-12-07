@@ -99,8 +99,10 @@ function Delog(file, cb) {
 
 		for (var i = t.json.log.length - 1; i >= t.json.log.length - x && i >= 0; i--) {
 			var entry = t.json.log[i];
+			var s = parse(entry.s);
+			var e = parse(entry.e);
 
-			var date = convert(parse(entry.s));
+			var date = convert(s);
 
 			var entry_el = document.createElement('div');
 			entry_el.classList = 'entry';
@@ -109,7 +111,7 @@ function Delog(file, cb) {
 			entry_el.style.margin = '15px 0';
 
 			entry_el.innerHTML = (date.getMonth() + 1) + '.' + date.getDate() +
-								 separator + duration(parse(entry.s), parse(entry.e)) + 'h' +
+								 separator + duration(s, e) + 'h' +
 								 separator + entry.c +
 								 separator + entry.t +
 								 separator + entry.d;
