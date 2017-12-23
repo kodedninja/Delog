@@ -65,6 +65,8 @@ function Delog(file, cb) {
 	this._percents = function(el, unordered, entries, total) {
 		var res = order(unordered);
 
+		var others = {hours: 0, entries: 0, percent: 0};
+
 		for (var key in res) {
 			var sector_el = document.createElement('div');
 			sector_el.classList = 'sector';
@@ -72,12 +74,33 @@ function Delog(file, cb) {
 			sector_el.style.display = 'inline-block';
 			sector_el.style.margin = '15px 0';
 
-			sector_el.innerHTML = '<h3>' + key + '</h3>' +
-								  res[key].toFixed(2) + 'h<br>' +
-								  entries[key] + (entries[key] > 1 ? ' logs<br>' : ' log<br>') +
-								  (res[key]*100/total).toFixed(2) + '%';
-			el.appendChild(sector_el)
+			var percent = (res[key]*100/total).toFixed(2)
+			if (percent < 1) {
+				others.hours += parseFloat(res[key].toFixed(2));
+				others.entries += entries[key];
+				others.percent += parseFloat(percent);
+			} else {
+				sector_el.innerHTML = '<h3>' + key + '</h3>' +
+									  res[key].toFixed(2) + 'h<br>' +
+									  entries[key] + (entries[key] > 1 ? ' logs<br>' : ' log<br>') +
+									  percent + '%';
+
+				el.appendChild(sector_el);
+			}
 		}
+
+		var others_el = document.createElement('div');
+		others_el.classList = 'sector';
+		others_el.style.width = '25%';
+		others_el.style.display = 'inline-block';
+		others_el.style.margin = '15px 0';
+
+		others_el.innerHTML = '<h3>Others</h3>' +
+							  others.hours + 'h<br>' +
+							  others.entries + (others.entries > 1 ? ' logs<br>' : ' log<br>') +
+							  others.percent + '%';
+
+		el.appendChild(others_el);
 	}
 
 	this.overview = function(el, prop) {
