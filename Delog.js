@@ -55,9 +55,12 @@ function Delog(file, cb) {
 		el.appendChild(others_el);
 	}
 
-	this.overview = function(el, prop) {
+	this.overview = function(el, x, prop) {
+		x = x != undefined ? x : 60;
+		prop = prop || {empties: false, color: '#000'};
+
 		var date = new Date(); // the starting date
-		date.setDate(date.getDate() - 60)
+		date.setDate(date.getDate() - x)
 		date.setHours(0,0,0,0);
 
 		var log = after(t.json.log, date); // the entries after the starting date
@@ -102,9 +105,11 @@ function Delog(file, cb) {
 		}
 	}
 
-	this.total = function(el, prop) {
+	this.total = function(el, x, prop) {
+		x = x != undefined ? x : 60;
+		prop = prop || {color: '#000', empties: false};
 		var date = new Date(); // the starting date
-		date.setDate(date.getDate() - 60)
+		date.setDate(date.getDate() - x)
 		date.setHours(0,0,0,0);
 
 		var log = after(t.json.log, date); // the entries after the starting date
@@ -317,7 +322,7 @@ function Delog(file, cb) {
 		return res;
 	}
 
-	// From joshavanier's Log app
+	// From joshavanier's Log
 	function calcWidth(a, b) {
       return (a - b) / 86400 * 100
     }
