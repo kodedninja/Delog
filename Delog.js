@@ -14,54 +14,6 @@ function Delog(file, cb) {
 		}
 	}
 
-	this._overview = function(el, prop, colored) {
-		var date = new Date(); // the starting date
-		date.setDate(date.getDate() - 60)
-		date.setHours(0,0,0,0);
-
-		var log = after(t.json.log, date); // the entries after the starting date
-
-		var days = Object.keys(log).length; // the number of days
-		var column_width = (100 / days).toFixed(3);
-		for (var time in log) {
-			var day = log[time];
-
-			var yp = 0;
-			var column = document.createElement('div');
-			column.classList = 'column';
-
-			column.style.width = (column_width - 0.4) + '%';
-			column.style.margin = '0 ' + 0.2 + '%';
-			column.style.position = "relative";
-		    column.style.height = "100%";
-		    column.style.display = "inline-block";
-		    column.style.borderBottom = "1px solid rgba(0,0,0,0)";
-			if (prop.empties) column.style.borderColor = prop.color;
-
-			for (var i = 0; i < day.length; i++) {
-				var entry = day[i];
-
-				var entry_el = document.createElement('div');
-
-				var height = Number(calcWidth(parse(entry.e), parse(entry.s)).toFixed(2));
-
-				entry_el.classList = "entry";
-				entry_el.style.width = "100%";
-				entry_el.style.height = height + '%';
-				entry_el.style.bottom = yp + '%';
-				if (colored) entry_el.style.background = t.json.palette[entry.c] ? t.json.palette[entry.c] : prop.color;
-				else entry_el.style.background = prop.color;
-				entry_el.style.position = "absolute";
-
-				column.appendChild(entry_el);
-
-				yp += height;
-			}
-
-			el.appendChild(column);
-		}
-	}
-
 	this._percents = function(el, unordered, entries, total) {
 		var res = order(unordered);
 
@@ -104,11 +56,93 @@ function Delog(file, cb) {
 	}
 
 	this.overview = function(el, prop) {
-		t._overview(el, prop, true);
+		var date = new Date(); // the starting date
+		date.setDate(date.getDate() - 60)
+		date.setHours(0,0,0,0);
+
+		var log = after(t.json.log, date); // the entries after the starting date
+
+		var days = Object.keys(log).length; // the number of days
+		var column_width = (100 / days).toFixed(3);
+		for (var time in log) {
+			var day = log[time];
+
+			var yp = 0;
+			var column = document.createElement('div');
+			column.classList = 'column';
+
+			column.style.width = (column_width - 0.4) + '%';
+			column.style.margin = '0 ' + 0.2 + '%';
+			column.style.position = "relative";
+		    column.style.height = "100%";
+		    column.style.display = "inline-block";
+		    column.style.borderBottom = "1px solid rgba(0,0,0,0)";
+			if (prop.empties) column.style.borderColor = prop.color;
+
+			for (var i = 0; i < day.length; i++) {
+				var entry = day[i];
+
+				var entry_el = document.createElement('div');
+
+				var height = Number(calcWidth(parse(entry.e), parse(entry.s)).toFixed(2));
+
+				entry_el.classList = "entry";
+				entry_el.style.width = "100%";
+				entry_el.style.height = height + '%';
+				entry_el.style.bottom = yp + '%';
+				entry_el.style.background = t.json.palette[entry.c] ? t.json.palette[entry.c] : prop.color;
+				entry_el.style.position = "absolute";
+
+				column.appendChild(entry_el);
+
+				yp += height;
+			}
+
+			el.appendChild(column);
+		}
 	}
 
 	this.total = function(el, prop) {
-		t._overview(el, prop, false);
+		var date = new Date(); // the starting date
+		date.setDate(date.getDate() - 60)
+		date.setHours(0,0,0,0);
+
+		var log = after(t.json.log, date); // the entries after the starting date
+
+		var days = Object.keys(log).length; // the number of days
+		var column_width = (100 / days).toFixed(3);
+		for (var time in log) {
+			var day = log[time];
+
+			var yp = 0;
+			var column = document.createElement('div');
+			column.classList = 'column';
+
+			column.style.width = (column_width - 0.4) + '%';
+			column.style.margin = '0 ' + 0.2 + '%';
+			column.style.position = "relative";
+		    column.style.height = "100%";
+		    column.style.display = "inline-block";
+		    column.style.borderBottom = "1px solid rgba(0,0,0,0)";
+			if (prop.empties) column.style.borderColor = prop.color;
+
+			for (var i = 0; i < day.length; i++) {
+				var entry = day[i];
+				var height = Number(calcWidth(parse(entry.e), parse(entry.s)).toFixed(2));
+				yp += height;
+			}
+			var entry_el = document.createElement('div');
+
+			entry_el.classList = "entry";
+			entry_el.style.width = "100%";
+			entry_el.style.height = yp + '%';
+			entry_el.style.bottom = '0';
+			entry_el.style.background = prop.color;
+			entry_el.style.position = "absolute";
+
+			column.appendChild(entry_el);
+			el.appendChild(column);
+		}
 	}
 
 	this.days = function(el) {
