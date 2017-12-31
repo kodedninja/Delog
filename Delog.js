@@ -48,9 +48,9 @@ function Delog(file, cb) {
 		others_el.style.margin = '15px 0';
 
 		others_el.innerHTML = '<h3>Others</h3>' +
-							  others.hours + 'h<br>' +
+							  others.hours.toFixed(2) + 'h<br>' +
 							  others.entries + (others.entries > 1 ? ' logs<br>' : ' log<br>') +
-							  others.percent + '%';
+							  others.percent.toFixed(2) + '%';
 
 		el.appendChild(others_el);
 	}
