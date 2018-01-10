@@ -61,13 +61,13 @@ function Delog(file, cb) {
 		var column_width = (100 / days).toFixed(3);
 		for (var time in log) {
 			var yp = 0;
-			var column = new_column(column_width, prop.color);
+			var column = new_column(column_width, new Date(parseInt(time)).toLocaleDateString(), prop.color);
 
 			for (var i = 0; i < log[time].length; i++) {
 				var entry = log[time][i];
 
 				var height = Number(calcWidth(parse(entry.e), parse(entry.s)).toFixed(2));
-				column.appendChild(new_entry(height, yp, t.json.palette[entry.c] ? t.json.palette[entry.c] : prop.color));
+				column.appendChild(new_entry(height, yp, t.json.palette[entry.c] ? t.json.palette[entry.c] : prop.color, entry.c + " - " + entry.t + " - " + entry.d));
 
 				yp += height;
 			}
@@ -90,7 +90,7 @@ function Delog(file, cb) {
 		var column_width = (100 / days).toFixed(3);
 		for (var time in log) {
 			var yp = 0;
-			var column = new_column(column_width, prop.color);
+			var column = new_column(column_width, new Date(parseInt(time)).toLocaleDateString(), prop.color);
 
 			for (var i = 0; i < log[time].length; i++) {
 				var entry = log[time][i];
@@ -117,7 +117,7 @@ function Delog(file, cb) {
 		var days = Object.keys(log).length; // the number of days
 		var column_width = (100 / days).toFixed(3);
 		for (var time in log) {
-			var column = new_column(column_width, prop.color)
+			var column = new_column(column_width, new Date(parseInt(time)).toLocaleDateString(), prop.color)
 
 			var yp = 0;
 			for (var i = 0; i < log[time].length; i++) {
@@ -243,10 +243,11 @@ function Delog(file, cb) {
 		return s;
 	}
 
-	function new_column(width, border) {
+	function new_column(width, title, border) {
 		var c = document.createElement('div');
 		c.classList = 'column';
 
+		if (title) c.title = title;
 		c.style.width = (width - 0.4) + '%';
 		c.style.margin = '0 ' + 0.2 + '%';
 		c.style.position = "relative";
@@ -258,9 +259,10 @@ function Delog(file, cb) {
 		return c;
 	}
 
-	function new_entry(height, yp, color) {
+	function new_entry(height, yp, color, title) {
 		var e = document.createElement('div');
 
+		if (title) e.title = title;
 		e.classList = "entry";
 		e.style.width = "100%";
 		e.style.height = height + '%';
