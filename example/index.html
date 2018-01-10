@@ -28,7 +28,7 @@
 			var projects_el = document.getElementById('projects-wrapper');
 			var latest_wrapper = document.getElementById('latest-wrapper');
 			var log = new Delog('/example/data.json', function() {
-				log.total(elem, 100, {color: '#000', empties: true});
+				log.total(elem, 80, {color: '#000', empties: true});
 				log.overview(overview_el, 60, {color: '#000', empties: true});
 				log.sectors(sectors_el);
 				log.projects(projects_el);
