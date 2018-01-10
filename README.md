@@ -9,24 +9,33 @@ A web visualiser for [Log](https://joshavanier.itch.io/log).
 ```javascript
 var elem = document.getElementById('total-wrapper');
 var latest = document.getElementById('latest-wrapper');
+var specific_el = document.getElementById('specific-wrapper');
 var log = new Delog('example/data.json', function() {
-  log.total(elem, {color: '#000', empties: true});
+  log.total(elem, 60, {color: '#000', empties: true});
+  log.query({sector: 'Writing', project: 'Delog'}, specific_el, 30, {color: '#000', empties: true});
   log.latest(elem, 5, ' ~ ');
   // other functions
 });
 ```
 
 ## API
-#### ```log.total(element, properties);```
-Draws a one color chart of your total hours/day.
+#### ```log.total(element, days, properties);```
+Draws a one color chart of your total hours/day for the last ```days``` days.
 The ```properties``` JSON has two fields:<br>
 ```color```:  the hex code of the colors of the bars<br>
 ```empties```: if true empty days are marked with a line
 
-#### ```log.overview(element, properties);```
-Draws a colorful chart of your total hours/day. The colors are the same as in Log or ```properties.color``` if not set.
+#### ```log.overview(element, days, properties);```
+Draws a colorful chart of your total hours/day for the last ```days``` days. The colors are the same as in Log or ```properties.color``` if not set.
 The ```properties``` JSON has two fields:<br>
 ```color```:  the default color for the sectors without a set color<br>
+```empties```: if true empty days are marked with a line
+
+#### ```log.query(query, element, days, properties);```
+Draws a one color chart for a specific project/sector for the last ```days``` days.
+Query could contain a ```sector``` or/and a ```project``` field. If both are present, the entries having both will be counted.
+The ```properties``` JSON has two fields:<br>
+```color```:  the hex code of the colors of the bars<br>
 ```empties```: if true empty days are marked with a line
 
 #### ```log.sectors(element);```
