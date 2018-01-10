@@ -12,6 +12,8 @@
 			<div id="total-wrapper"></div>
 			<h3>Overview:</h3>
 			<div id="overview-wrapper"></div>
+			<h3>Specific project/sector:</h3>
+			<div id="specific-wrapper"></div>
 			<h3>Sectors:</h3>
 			<div id="sectors-wrapper"></div>
 			<h3>Projects:</h3>
@@ -26,10 +28,12 @@
 			var overview_el = document.getElementById('overview-wrapper');
 			var sectors_el = document.getElementById('sectors-wrapper');
 			var projects_el = document.getElementById('projects-wrapper');
+			var specific_el = document.getElementById('specific-wrapper');
 			var latest_wrapper = document.getElementById('latest-wrapper');
 			var log = new Delog('/example/data.json', function() {
 				log.total(elem, 80, {color: '#000', empties: true});
 				log.overview(overview_el, 60, {color: '#000', empties: true});
+				log.query({sector: 'Writing', project: 'hex22'}, specific_el, 60, {color: '#000', empties: true});
 				log.sectors(sectors_el);
 				log.projects(projects_el);
 				log.latest(latest_wrapper, 5);

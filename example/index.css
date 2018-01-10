@@ -1,5 +1,9 @@
 body {
-	font-family: monospace;
+	font-family: 'helvetica neue', sans-serif;
+}
+
+h3 {
+	margin: 30px 0;
 }
 
 .wrapper {
@@ -8,7 +12,7 @@ body {
 	margin: 0 auto;
 }
 
-#total-wrapper {
+#total-wrapper, #specific-wrapper {
 	position: relative;
 	height: 100px;
 }

@@ -20,11 +20,7 @@ function Delog(file, cb) {
 		var others = {hours: 0, entries: 0, percent: 0};
 
 		for (var key in res) {
-			var sector_el = document.createElement('div');
-			sector_el.classList = 'sector';
-			sector_el.style.width = '25%';
-			sector_el.style.display = 'inline-block';
-			sector_el.style.margin = '15px 0';
+			var sector_el = new_sector();
 
 			var percent = (res[key]*100/total).toFixed(2)
 			if (percent < 1) {
@@ -41,11 +37,7 @@ function Delog(file, cb) {
 			}
 		}
 
-		var others_el = document.createElement('div');
-		others_el.classList = 'sector';
-		others_el.style.width = '25%';
-		others_el.style.display = 'inline-block';
-		others_el.style.margin = '15px 0';
+		var others_el = new_sector();
 
 		others_el.innerHTML = '<h3>Others</h3>' +
 							  others.hours.toFixed(2) + 'h<br>' +
@@ -68,35 +60,14 @@ function Delog(file, cb) {
 		var days = Object.keys(log).length; // the number of days
 		var column_width = (100 / days).toFixed(3);
 		for (var time in log) {
-			var day = log[time];
-
 			var yp = 0;
-			var column = document.createElement('div');
-			column.classList = 'column';
+			var column = new_column(column_width, prop.color);
 
-			column.style.width = (column_width - 0.4) + '%';
-			column.style.margin = '0 ' + 0.2 + '%';
-			column.style.position = "relative";
-		    column.style.height = "100%";
-		    column.style.display = "inline-block";
-		    column.style.borderBottom = "1px solid rgba(0,0,0,0)";
-			if (prop.empties) column.style.borderColor = prop.color;
-
-			for (var i = 0; i < day.length; i++) {
-				var entry = day[i];
-
-				var entry_el = document.createElement('div');
+			for (var i = 0; i < log[time].length; i++) {
+				var entry = log[time][i];
 
 				var height = Number(calcWidth(parse(entry.e), parse(entry.s)).toFixed(2));
-
-				entry_el.classList = "entry";
-				entry_el.style.width = "100%";
-				entry_el.style.height = height + '%';
-				entry_el.style.bottom = yp + '%';
-				entry_el.style.background = t.json.palette[entry.c] ? t.json.palette[entry.c] : prop.color;
-				entry_el.style.position = "absolute";
-
-				column.appendChild(entry_el);
+				column.appendChild(new_entry(height, yp, t.json.palette[entry.c] ? t.json.palette[entry.c] : prop.color));
 
 				yp += height;
 			}
@@ -108,6 +79,7 @@ function Delog(file, cb) {
 	this.total = function(el, x, prop) {
 		x = x != undefined ? x : 60;
 		prop = prop || {color: '#000', empties: false};
+
 		var date = new Date(); // the starting date
 		date.setDate(date.getDate() - x)
 		date.setHours(0,0,0,0);
@@ -117,34 +89,48 @@ function Delog(file, cb) {
 		var days = Object.keys(log).length; // the number of days
 		var column_width = (100 / days).toFixed(3);
 		for (var time in log) {
-			var day = log[time];
-
 			var yp = 0;
-			var column = document.createElement('div');
-			column.classList = 'column';
+			var column = new_column(column_width, prop.color);
 
-			column.style.width = (column_width - 0.4) + '%';
-			column.style.margin = '0 ' + 0.2 + '%';
-			column.style.position = "relative";
-		    column.style.height = "100%";
-		    column.style.display = "inline-block";
-		    column.style.borderBottom = "1px solid rgba(0,0,0,0)";
-			if (prop.empties) column.style.borderColor = prop.color;
-
-			for (var i = 0; i < day.length; i++) {
-				var entry = day[i];
+			for (var i = 0; i < log[time].length; i++) {
+				var entry = log[time][i];
 				var height = Number(calcWidth(parse(entry.e), parse(entry.s)).toFixed(2));
 				yp += height;
 			}
-			var entry_el = document.createElement('div');
 
-			entry_el.classList = "entry";
-			entry_el.style.width = "100%";
-			entry_el.style.height = yp + '%';
-			entry_el.style.bottom = '0';
-			entry_el.style.background = prop.color;
-			entry_el.style.position = "absolute";
+			var entry_el = new_entry(yp, 0, prop.color);
 
+			column.appendChild(entry_el);
+			el.appendChild(column);
+		}
+	}
+
+	this.query = function(target, el, x, prop) {
+		x = x != undefined ? x : 60;
+		prop = prop || {color: '#000', empties: false};
+		var date = new Date(); // the starting date
+		date.setDate(date.getDate() - x)
+		date.setHours(0,0,0,0);
+
+		var log = after(t.json.log, date); // the entries after the starting date
+
+		var days = Object.keys(log).length; // the number of days
+		var column_width = (100 / days).toFixed(3);
+		for (var time in log) {
+			var column = new_column(column_width, prop.color)
+
+			var yp = 0;
+			for (var i = 0; i < log[time].length; i++) {
+				var entry = log[time][i];
+				if ((target.project && target.sector && entry.t == target.project && entry.c == target.sector) ||
+					(target.project && !target.sector && entry.t == target.project) ||
+					(target.sector && !target.project && entry.c == target.sector)) {
+					var height = Number(calcWidth(parse(entry.e), parse(entry.s)).toFixed(2));
+					yp += height;
+				}
+			}
+
+			var entry_el = new_entry(yp, 0, prop.color);
 			column.appendChild(entry_el);
 			el.appendChild(column);
 		}
@@ -246,6 +232,43 @@ function Delog(file, cb) {
 								 separator + entry.d;
 			el.appendChild(entry_el)
 		}
+	}
+
+	function new_sector() {
+		var s = document.createElement('div');
+		s.classList = 'sector';
+		s.style.width = '25%';
+		s.style.display = 'inline-block';
+		s.style.margin = '15px 0';
+		return s;
+	}
+
+	function new_column(width, border) {
+		var c = document.createElement('div');
+		c.classList = 'column';
+
+		c.style.width = (width - 0.4) + '%';
+		c.style.margin = '0 ' + 0.2 + '%';
+		c.style.position = "relative";
+		c.style.height = "100%";
+		c.style.display = "inline-block";
+		c.style.borderBottom = "1px solid rgba(0,0,0,0)";
+		if (border) c.style.borderColor = border;
+
+		return c;
+	}
+
+	function new_entry(height, yp, color) {
+		var e = document.createElement('div');
+
+		e.classList = "entry";
+		e.style.width = "100%";
+		e.style.height = height + '%';
+		e.style.bottom = yp + '%';
+		e.style.background = color;
+		e.style.position = "absolute";
+
+		return e;
 	}
 
 	function after(log, date) {
