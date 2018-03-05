@@ -37,14 +37,17 @@ function Delog(file, cb) {
 			}
 		}
 
-		var others_el = new_sector();
+		if (others.hours > 0) {
+			var others_el = new_sector();
 
-		others_el.innerHTML = '<h3>Others</h3>' +
-							  others.hours.toFixed(2) + 'h<br>' +
-							  others.entries + (others.entries > 1 ? ' logs<br>' : ' log<br>') +
-							  others.percent.toFixed(2) + '%';
 
-		el.appendChild(others_el);
+			others_el.innerHTML = '<h3>Others</h3>' +
+			others.hours.toFixed(2) + 'h<br>' +
+			others.entries + (others.entries > 1 ? ' logs<br>' : ' log<br>') +
+			others.percent.toFixed(2) + '%';
+
+			el.appendChild(others_el);
+		}
 	}
 
 	this.overview = function(el, x, prop) {
